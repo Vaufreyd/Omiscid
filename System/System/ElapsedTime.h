@@ -39,7 +39,7 @@ public:
 	/** @brief reset the start time */
 	void Reset()
 	{
-		TimePoint StartTime = ChronoType::now();
+		StartTime = ChronoType::now();
 	}
 
 	/** @brief Get the elapsed time in DurationType since construction or last reset.
@@ -69,7 +69,10 @@ public:
 	{
 		TimePoint CurrentTime = ChronoType::now();
 
-		double res = ((double)std::chrono::duration_cast<std::chrono::microseconds>(CurrentTime-StartTime).count())/1000000.0;
+		std::chrono::duration<double, ratio<1,1>> ElapsedTimeInSecond = CurrentTime-StartTime;
+
+		// double res = ((double)std::chrono::duration_cast<std::chrono::microseconds>(CurrentTime-StartTime).count())/1000000.0;
+		double res = ElapsedTimeInSecond.count();
 
 		if ( DoReset == true )
 		{
