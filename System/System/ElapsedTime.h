@@ -69,9 +69,8 @@ public:
 	{
 		TimePoint CurrentTime = ChronoType::now();
 
+		// Better way to write convertion to second, i.e. ratio<1,1>
 		std::chrono::duration<double, ratio<1,1>> ElapsedTimeInSecond = CurrentTime-StartTime;
-
-		// double res = ((double)std::chrono::duration_cast<std::chrono::microseconds>(CurrentTime-StartTime).count())/1000000.0;
 		double res = ElapsedTimeInSecond.count();
 
 		if ( DoReset == true )
