@@ -89,7 +89,15 @@ bool Thread::StartThread()
 
 	MyThread.reset( new std::thread( Thread::CallRun, (void*)this ) );
 
-	return (MyThread.get() != nullptr);
+	if ( MyThread.get() != nullptr )
+	{
+		// let's it have its own life
+		MyThread->detach();
+
+		return true;
+	}
+	
+	return false;
 }
 
 bool Thread::StopThread(int wait_ms /* = DEFAULT_THREAD_DESTRUCTOR_TIMEOUT */, bool UNUSED /* = true */  )
@@ -126,7 +134,7 @@ bool Thread::StopThread(int wait_ms /* = DEFAULT_THREAD_DESTRUCTOR_TIMEOUT */, b
 			// Timeout !!!
 #ifdef DEBUG_THREAD
 			OmiscidError( "Thread::StopThread: %s do not stop before timeout (%d).\n",  ThreadName.GetStr(), wait_ms );
-#else
+#else 
 			OmiscidError( "Thread::StopThread: Thread do not stop before timeout (%d).\n",  wait_ms );
 #endif
 		}
@@ -137,10 +145,10 @@ bool Thread::StopThread(int wait_ms /* = DEFAULT_THREAD_DESTRUCTOR_TIMEOUT */, b
 #endif
 		}
 
-		// Detach thread and delete it by resetting the unique ptr
-		MyThread->detach();
-		MyThread.reset();
 	}
+
+	// Delete it by resetting the unique ptr
+	MyThread.reset();
 
 	return ThreadStopInTime;
 }
