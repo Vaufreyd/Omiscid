@@ -234,6 +234,21 @@ void Serializable::AddToSerialization( const SimpleString& Key, char *& Val )
 	tmpMapping->FunctionToDecode = UnserializeCharStarFromAddress;
 }
 
+void Serializable::AddToSerialization( const SimpleString& Key, Serializable& Val )
+{
+	SmartLocker SL_this((const LockableObject&)*this);
+
+	// Check if SerializeMappingIsDone
+	CallDeclareSerializeMappingIfNeeded();
+
+	Serializable::EncodeMapping * tmpMapping = Create( Key );
+
+	// Fill (new) structure
+	tmpMapping->AddressOfObject = (void*)&Val;
+	tmpMapping->FunctionToEncode = SerializeSerializableFromAddress;
+	tmpMapping->FunctionToDecode = UnserializeSerializableFromAddress;
+}
+
 SerializeValue Serializable::Serialize()
 {
 	SmartLocker SL_this((const LockableObject&)*this);

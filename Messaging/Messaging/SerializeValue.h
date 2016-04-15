@@ -6,6 +6,8 @@
 #include <Messaging/SerializeException.h>
 #include <Messaging/SerializeManager.h>
 
+#include <System/SimpleList.h>
+
 #include <vector>
 #include <list>
 

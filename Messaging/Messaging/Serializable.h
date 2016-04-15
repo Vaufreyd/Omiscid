@@ -121,6 +121,17 @@ void Unserialize( const SimpleString& Val, Serializable& Data );
 void Unserialize( const SerializeValue& Val, Serializable * pData );
 void Unserialize( const SerializeValue& Val, Serializable& Data );
 
+inline void UnserializeSerializableFromAddress( const SerializeValue& Val, void * pData )
+{
+	Unserialize( Val, (Serializable *)pData );
+}
+
+inline SerializeValue SerializeSerializableFromAddress( void * pData )
+{
+	return Serialize( *(Serializable*)pData );
+}
+
+
 template <typename CurrentType>
 void Serializable::AddToSerialization( const SimpleString& Key, SimpleList<CurrentType>& Val )
 {
