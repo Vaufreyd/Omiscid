@@ -78,6 +78,11 @@ public:
   void Bind(const SimpleString addr, int port);
 
   /**
+   * @brief Check if socket descriptor is valid
+   */
+  bool IsActive() const;
+
+  /**
    * @brief Listen for connections on a socket.
    * @exception SocketException error calling listen.
    */

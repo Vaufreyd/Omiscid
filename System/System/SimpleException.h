@@ -15,9 +15,9 @@
 	#include <errno.h>
 #endif
 
-namespace Omiscid {
+class Omiscid::SimpleString;
 
-class SimpleString;
+namespace Omiscid {
 
 /**
  * @class SimpleException SimpleException.h System/SimpleException.h

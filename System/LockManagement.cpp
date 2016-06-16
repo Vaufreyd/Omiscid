@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include <System/LockManagement.h>
+// #include <System/Thread.h>
 
 using namespace Omiscid;
 
@@ -58,14 +59,14 @@ SmartLocker::~SmartLocker()
 	/** @brief Function used to lock the LockableObject object
 	 *
 	 */
-bool SmartLocker::Lock()
+bool SmartLocker::Lock(int wait_us /* = 0 */)
 {
-	if ( ManagedLoackableObject.Lock() == true )
+	bool res = ManagedLoackableObject.Lock(wait_us);
+	if ( res == true )
 	{
 		LockCount++;
-		return true;
 	}
-	return false;
+	return true;
 }
 
 	/** @brief Function used to unlock the LockableObject object

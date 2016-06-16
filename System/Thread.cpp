@@ -72,7 +72,7 @@ Thread::~Thread()
 	}
 }
 
-bool Thread::StartThread()
+bool Thread::StartThread(unsigned int WaitForStartCompletionInMicroSeconds /* = DEFAULT_START_THREAD_TIMEOUT (0) */)
 {
 	// do nothing if already running
 	if ( IsRunning() == true )
@@ -89,15 +89,23 @@ bool Thread::StartThread()
 
 	MyThread.reset( new std::thread( Thread::CallRun, (void*)this ) );
 
-	if ( MyThread.get() != nullptr )
-	{
-		// let's it have its own life
-		MyThread->detach();
+	// let's it have its own life
+	MyThread->detach();
 
-		return true;
+	if ( WaitForStartCompletionInMicroSeconds == 0 )
+	{
+		PerfElapsedTime WaitedTime;
+		while( IsRunning() == false )
+		{
+			if ( WaitedTime.Get() > WaitForStartCompletionInMicroSeconds )
+			{
+				return false;
+			}
+			Thread::Usleep(100);
+		}
 	}
-	
-	return false;
+
+	return true;
 }
 
 bool Thread::StopThread(int wait_ms /* = DEFAULT_THREAD_DESTRUCTOR_TIMEOUT */, bool UNUSED /* = true */  )
@@ -151,6 +159,26 @@ bool Thread::StopThread(int wait_ms /* = DEFAULT_THREAD_DESTRUCTOR_TIMEOUT */, b
 	MyThread.reset();
 
 	return ThreadStopInTime;
+}
+
+/** @brief Join the thread
+ *
+ */
+void Thread::Join(int wait_ms /* = DEFAULT_JOIN_TIMEOUT */ )
+{
+	// If I am myself asking to stop, flags are set, go back in the stack to terminate cleanly
+	if ( GetId() == GetCallerThreadId() )
+	{
+		// Ok, I will stop later so, maybe not in time
+		// throw SimpleException("Thread can not join itself");
+		return;
+	}
+
+	// As we detech the thread, we can not call std::thread::join
+	if ( IsRunning() == true )
+	{
+		IsEnded.Wait(wait_ms);
+	}
 }
 
 unsigned int FUNCTION_CALL_TYPE Thread::CallRun(void* ptr)

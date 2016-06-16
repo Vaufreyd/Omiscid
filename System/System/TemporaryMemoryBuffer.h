@@ -12,7 +12,7 @@
 
 namespace Omiscid {
 
-class TemporaryMemoryBuffer : public MemoryBuffer
+class TemporaryMemoryBuffer : public Omiscid::MemoryBuffer
 {
 public:
 	TemporaryMemoryBuffer() : MemoryBuffer() {};

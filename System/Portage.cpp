@@ -1,5 +1,6 @@
 #include <System/Portage.h>
-#include <System/Thread.h>
+// #include <System/Thread.h>
+#include <System/MemoryBuffer.h>
 
 #ifdef OMISCID_ON_WINDOWS
 

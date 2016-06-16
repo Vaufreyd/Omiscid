@@ -33,8 +33,22 @@ public:
 		Reset();
 	}
 
+	/** @brief Copy constructor */
+	ElapsedTimeBase(const ElapsedTimeBase& Other)
+	{
+		operator=(Other);
+	}
+
 	/** @brief Virtual destructor */
 	virtual ~ElapsedTimeBase() {}
+
+	/** @brief Operator= */
+	const ElapsedTimeBase& operator=(const ElapsedTimeBase& Other)
+	{
+		StartTime = Other.StartTime;
+
+		return Other;
+	}	
 
 	/** @brief reset the start time */
 	void Reset()

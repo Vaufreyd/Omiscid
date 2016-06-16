@@ -36,6 +36,10 @@ public:
 		NumberOfElements = NumberOfElementsInBuffer;
 	}
 
+	// Make these usable as public member
+	using MemoryBuffer::MemSet;
+	using MemoryBuffer::GetLength;
+
 	size_t GetNumberOfElements() const
 	{
 		return NumberOfElements;
@@ -47,6 +51,16 @@ public:
 	}
 	
 	operator const TYPE*() const
+	{
+		return (const TYPE*)(get());
+	}
+
+	operator void*()
+	{
+		return (TYPE*)(get());
+	}
+	
+	operator const void*() const
 	{
 		return (const TYPE*)(get());
 	}

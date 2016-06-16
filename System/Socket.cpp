@@ -1,5 +1,6 @@
 #include <System/Socket.h>
 #include <System/Portage.h>
+#include <System/MemoryBuffer.h>
 
 #include <sys/types.h>
 
@@ -124,6 +125,14 @@ void Socket::Listen()
 	{
 		throw SocketException("listen", Errno());
 	}
+}
+
+/**
+ * @brief Check if socket descriptor is valid
+ */
+bool Socket::IsActive() const
+{
+	return (descriptor != SOCKET_ERROR);
 }
 
 Socket* Socket::Accept()
@@ -332,7 +341,7 @@ bool Socket::Connect(const SimpleString addr, int port, int ConnectionTimeout /*
 				// True error
 				Close();
 
-	#ifdef DEBUG
+#ifdef DEBUG
 				SimpleString Mesg;
 				Mesg = "connect to ";
 				Mesg += addr;
@@ -341,7 +350,7 @@ bool Socket::Connect(const SimpleString addr, int port, int ConnectionTimeout /*
 				throw SocketException(Mesg, Errno());
 #else
 				throw SocketException("connect", Errno());
-	#endif
+#endif
 			}
 
 			// here we are *not* connected

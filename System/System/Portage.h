@@ -10,7 +10,6 @@
 #include <System/ConfigSystem.h>
 #include <System/SimpleString.h>
 #include <System/SimpleException.h>
-#include <System/TemporaryMemoryBuffer.h>
 
 namespace Omiscid {
 

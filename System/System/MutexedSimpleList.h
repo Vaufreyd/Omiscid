@@ -15,6 +15,8 @@
 
 namespace Omiscid {
 
+class ReentrantMutex;
+
 /**
 * @class MutexedSimpleList SimpleList.h System/SimpleList.h
 * @brief Combination of a simple list with a mutex.
@@ -230,7 +232,7 @@ public:
 	* Wait until the mutex can be locked.
 	* @return if the 'lock' on the mutex is successful
 	*/
-	bool Lock();
+	bool Lock(int wait_us = 0);
 
 	/** @brief Unlock the access to the list
 	*
@@ -244,11 +246,11 @@ private:
 };
 
 template <typename TYPE>
-bool MutexedSimpleList<TYPE>::Lock()
+bool MutexedSimpleList<TYPE>::Lock(int wait_us = 0)
 {
 #ifdef DEBUG_MSL
 	// Only for MutexedSimpleList debugging
-	bool ret = mutex.Lock();	// Add SL_ as comment in order to prevent false alarm in code checker on locks
+	bool ret = mutex.Lock(wait_us);	// Add SL_ as comment in order to prevent false alarm in code checker on locks
 
 	if ( ret == true )
 	{
@@ -256,7 +258,7 @@ bool MutexedSimpleList<TYPE>::Lock()
 	}
 	return ret;
 #else
-	return mutex.Lock();	// Add SL_ as comment in order to prevent false alarm in code checker on locks
+	return mutex.Lock(wait_us);	// Add SL_ as comment in order to prevent false alarm in code checker on locks
 #endif
 }
 

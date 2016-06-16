@@ -100,8 +100,10 @@ public:
 	 *
 	 * Execute the method Run in a new thread.
 	 * Begin by stopping the thread if it is running.
+	 * @param WaitForStartCompletionInMicroSeconds WaitForStartCompletionInMicroSeconds set to non zeros will make caller thread to wait at max WaitForStartCompletion microseconds until start of its child. Default: DEFAULT_START_THREAD_TIMEOUT (0, thus no wait);
+	 * @return WaitForStartCompletionInMicroSeconds is 0, return true if no exception occur when creating the thread. If WaitForStartCompletionInMicroSeconds is non zero, return true if thread was started before WaitForStartCompletionInMicroSeconds (Wait time step is 100 microseconds)
 	 */
-	virtual bool StartThread();
+	virtual bool StartThread(unsigned int WaitForStartCompletionInMicroSeconds = DEFAULT_START_THREAD_TIMEOUT);
 
 	/** @brief Stop the thread
 	 *
@@ -111,6 +113,16 @@ public:
 	 * @param UNUSED keep for API compatibility reasons
 	 */
 	virtual bool StopThread(int wait_ms = DEFAULT_THREAD_DESTRUCTOR_TIMEOUT, bool UNUSED = true );
+
+	/** @brief Join the thread
+	 *
+	 * Wait for the thread completion.
+	 */
+	void Join(int wait_ms = DEFAULT_JOIN_TIMEOUT);
+
+	/** @brief Yield calling thread sleep
+	 */
+	static void Yield() { std::this_thread::yield(); }
 
 	/** @brief the calling thread sleep
 	 * @param nb_milliseconds [in] number of milliseconds to sleep
@@ -152,7 +164,7 @@ public:
 
 protected:
 
-	enum TIMEOUTS { DEFAULT_THREAD_DESTRUCTOR_TIMEOUT = 1000, DEFAULT_MAX_THREAD_DESTRUCTOR_TIMEOUT = 10000, DEFAULT_MESSAGE_TIMEOUT = 100 }; // 1 second, 100 ms
+	enum TIMEOUTS { DEFAULT_THREAD_DESTRUCTOR_TIMEOUT = 1000, DEFAULT_MAX_THREAD_DESTRUCTOR_TIMEOUT = 10000, DEFAULT_MESSAGE_TIMEOUT = 100, DEFAULT_JOIN_TIMEOUT = 0, DEFAULT_START_THREAD_TIMEOUT = 0 }; // 1 second, 10 seconds, 100 ms, 0 second (infinite)
 
 	/** @brief Retrieve message for a thread with timeout
 	 *

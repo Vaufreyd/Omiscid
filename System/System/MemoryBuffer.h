@@ -35,6 +35,11 @@ public:
 		return LogicalBufferSize;
 	}
 
+	inline void MemSet( int Val )
+	{
+		memset( get(), Val, LogicalBufferSize );
+	}
+
 	template<typename CAST_TYPE>
 	operator CAST_TYPE*()
 	{

@@ -27,6 +27,8 @@
 
 
 #ifdef OMISCID_ON_WINDOWS
+	// To prevent the Yield definition from the winbase.h
+	#undef Yield
 
 	// To prevent warning about printf, strcpy in Visual Studio 2005, etc...
 	#ifndef _CRT_SECURE_NO_DEPRECATE

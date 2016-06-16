@@ -38,6 +38,7 @@ public:
 
 	void AddToSerialization( const SimpleString& Key, long& Val );
 	void AddToSerialization( const SimpleString& Key, int& Val );
+	void AddToSerialization( const SimpleString& Key, long long int& Val );
 	void AddToSerialization( const SimpleString& Key, unsigned int& Val );
 	void AddToSerialization( const SimpleString& Key, short int& Val );
 	void AddToSerialization( const SimpleString& Key, unsigned short& Val );

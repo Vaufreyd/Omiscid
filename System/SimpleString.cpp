@@ -1,6 +1,7 @@
 #include <System/SimpleString.h>
 
 #include <System/LockManagement.h>
+#include <System/MemoryBuffer.h>
 #include <System/Portage.h>
 
 #include <string.h>
@@ -134,7 +135,11 @@ const SimpleString& SimpleString::operator=(size_t st)
 {
 	MemoryBuffer tmp(55);
 	// warning: ISO C++ does not support the '%lf' printf format
+#ifdef OMISCID_ON_WINDOWS
+	snprintf((char*)tmp, 100, "%Iu", st);
+#else
 	snprintf((char*)tmp, 100, "%zu", st);
+#endif
 	operator=((char*)tmp);
 
 	return *this;
@@ -192,7 +197,11 @@ SimpleString& SimpleString::operator+=(size_t st)
 {
 	MemoryBuffer tmp(100);
 	// warning: ISO C++ does not support the '%lf' printf format
+#ifdef OMISCID_ON_WINDOWS
+	snprintf((char*)tmp, 100, "%Iu", st);
+#else
 	snprintf((char*)tmp, 100, "%zu", st);
+#endif
 	Append((char*)tmp);
 	return *this;
 }

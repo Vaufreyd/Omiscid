@@ -1,6 +1,7 @@
 #include <System/SharedMemSegment.h>
 
 #include <System/Thread.h>
+#include <System/MemoryBuffer.h>
 
 using namespace Omiscid;
 

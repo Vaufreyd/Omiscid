@@ -10,6 +10,7 @@
 #include <System/ConfigSystem.h>
 #include <System/LockManagement.h>
 
+
 #include <mutex>
 
 namespace Omiscid {
@@ -23,8 +24,11 @@ namespace Omiscid {
  * @author Dominique Vaufreydaz, Grenoble Alpes University, Inria
  * @author Sebastien Pesnel
  */
-class Mutex : public LockableObject, public std::mutex
+class Mutex : public LockableObject// , public std::mutex
 {
+protected:
+	std::mutex InternalMutex;
+
 public:
 	/** @brief Constructor */
 	Mutex() {}
@@ -38,7 +42,7 @@ public:
 	 * Wait if the mutex is already locked, until it is unlocked, and then locks the mutex
 	 * @return false if an error occured
 	 */
-	inline bool Lock() { return try_lock(); }
+	bool Lock(int wait_us = 0);
 
 	/**
 	 * @brief Lock the mutex. Deprecated, use Mutex#Lock instead.
@@ -46,14 +50,14 @@ public:
 	 * Wait if the mutex is already locked, until it is unlocked, and then locks the mutex
 	 * @return false if an error occured
 	 */
-	inline bool EnterMutex() { return Lock(); };
+	inline bool EnterMutex(int wait_us = 0) { return Lock(wait_us); };
 
 	/**
 	 * @brief Unlock the mutex
 	 *
 	 * Enables other clients to use the critical section protected by this mutex.
 	 */
-	inline bool Unlock() { unlock(); return true; }
+	inline bool Unlock() { InternalMutex.unlock(); return true; }
 
 	/**
 	 * @brief Unlock the mutex. Deprecated, use Mutex#Unlock instead.
@@ -68,14 +72,6 @@ private:
 	unsigned int OwnerId;
 	unsigned int PreviousOwnerId;
 #endif
-
-#ifdef OMISCID_ON_WINDOWS
-	HANDLE mutex;
-#else
-	unsigned int before[5];	/*!< to prevent memory correption by pthread_* functions */
-	pthread_mutex_t mutex; /*!< Posix Mutex*/
-	unsigned int after[5];		/*!< to prevent memory correption by pthread_* functions */
-#endif /* OMISCID_ON_WINDOWS */
 
 };
 

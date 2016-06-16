@@ -33,7 +33,7 @@ public:
 	/** @brief Virtual function used to lock the object
 	 *
 	 */
-	virtual bool Lock() = 0;
+	virtual bool Lock(int wait_us = 0) = 0;
 
 	/** @brief Virtual function used to unlock the object
 	 *
@@ -73,7 +73,7 @@ public:
 	/** @brief Function used to lock the LockableObject object
 	 *
 	 */
-	bool Lock();
+	bool Lock(int wait_us = 0);
 
 	/** @brief Function used to unlock the LockableObject object
 	 *

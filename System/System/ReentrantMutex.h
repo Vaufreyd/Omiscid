@@ -14,8 +14,6 @@
 
 namespace Omiscid {
 
-template <typename TYPE> class SimpleList;
-
 /**
  * @class ReentrantMutex ReentrantMutex.h System/ReentrantMutex.h
  * @brief ReentrantMutex Implementation
@@ -25,8 +23,11 @@ template <typename TYPE> class SimpleList;
  * @author Dominique Vaufreydaz, Grenoble Alpes University, Inria
  */
 
-class ReentrantMutex : public LockableObject, public std::recursive_mutex
+class ReentrantMutex : public LockableObject 
 {
+protected:
+	std::recursive_mutex InternalMutex;
+
 public:
 	/** @brief Constructor */
 	ReentrantMutex() {}
@@ -40,22 +41,22 @@ public:
 	 * Wait if the mutex is already locked, until it is unlocked, and then locks the mutex
 	 * @return false if an error occured
 	 */
-	inline bool Lock() { return try_lock(); }
+	bool Lock(int wait_us = 0);
 
 	/**
-	 * @brief Lock the mutex. Deprecated, use ReentrantMutex#Lock instead
+	 * @brief Lock the mutex. Deprecated, use Mutex#Lock instead.
 	 *
 	 * Wait if the mutex is already locked, until it is unlocked, and then locks the mutex
 	 * @return false if an error occured
 	 */
-	inline bool EnterMutex() { return Lock(); };
+	inline bool EnterMutex(int wait_us = 0) { return Lock(wait_us); };
 
 	/**
-	 * @brief Unlock the mutex. Deprecated, use ReentrantMutex#Unlock instead
+	 * @brief Unlock the mutex
 	 *
 	 * Enables other clients to use the critical section protected by this mutex.
 	 */
-	inline bool Unlock() { unlock(); return true; }
+	inline bool Unlock() { InternalMutex.unlock(); return true; }
 
 	/**
 	 * @brief Unlock the mutex. Deprecated, use ReentrantMutex#Unlock instead
