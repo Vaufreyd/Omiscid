@@ -197,7 +197,23 @@ unsigned int FUNCTION_CALL_TYPE Thread::CallRun(void* ptr)
 
 	// Do my job
 	t->ThreadIsRunning = true;
-	t->Run();
+	try
+	{
+		t->Run();
+	}
+	catch( Omiscid::SimpleException &e )
+	{
+		fprintf( stderr, "Omiscid::SimpleException in thread: %s\n", e.msg );
+	}
+	catch( std::exception &e)
+	{
+		fprintf( stderr, "std::exception in thread: %s\n", e.what() );
+		int zz = 0;
+	}
+	catch(...)
+	{
+		fprintf( stderr, "Unknown exception in thread\n" );
+	}
 	t->ThreadIsRunning = false;
 
 	// signal, my job is over
