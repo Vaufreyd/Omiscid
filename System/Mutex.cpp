@@ -12,23 +12,32 @@ using namespace Omiscid;
 	*/
 bool Mutex::Lock(int wait_us /*= 0*/)
 {	
-	if ( wait_us == 0 )
+	try
 	{
-		InternalMutex.lock();
-	}
-	else
-	{
-		Omiscid::PerfElapsedTime Time;
-		while( InternalMutex.try_lock() == false )
+		if ( wait_us == 0 )
 		{
-			if ( Time.Get() >= wait_us )
+			while( InternalMutex.try_lock() == false )
 			{
-				return false;
+				Omiscid::Thread::Usleep(100);
 			}
-			Omiscid::Thread::Usleep(100);
+		}
+		else
+		{
+			Omiscid::PerfElapsedTime Time;
+			while( InternalMutex.try_lock() == false )
+			{
+				if ( Time.Get() >= wait_us )
+				{
+					return false;
+				}
+				Omiscid::Thread::Usleep(100);
+			}
 		}
 	}
-
+	catch ( std::exception & )
+	{
+		return false;
+	}
 
 	return true;
 }
