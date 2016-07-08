@@ -68,7 +68,7 @@ else()
 endif()
 
 if ( NOT ModulesToInclude )
-	MESSAGE( FATAL_ERROR "Wrong omiscid module list " ${Omiscid_MODULES})
+	MESSAGE( FATAL_ERROR "Wrong omiscid module list " ${Omiscid_FIND_COMPONENTS})
 endif()
 
 set(ListSuffixes "_INCLUDE_DIRS;_LIBS;_SRCS;_HDRS")
