@@ -15,8 +15,6 @@
 	#include <errno.h>
 #endif
 
-class Omiscid::SimpleString;
-
 namespace Omiscid {
 
 /**
