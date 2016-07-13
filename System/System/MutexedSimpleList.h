@@ -246,7 +246,7 @@ private:
 };
 
 template <typename TYPE>
-bool MutexedSimpleList<TYPE>::Lock(int wait_us = 0)
+bool MutexedSimpleList<TYPE>::Lock(int wait_us /* = 0 */)
 {
 #ifdef DEBUG_MSL
 	// Only for MutexedSimpleList debugging
