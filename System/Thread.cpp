@@ -203,7 +203,7 @@ unsigned int FUNCTION_CALL_TYPE Thread::CallRun(void* ptr)
 	}
 	catch( Omiscid::SimpleException &e )
 	{
-		fprintf( stderr, "Omiscid::SimpleException in thread: %s\n", e.msg );
+		fprintf( stderr, "Omiscid::SimpleException in thread: %s\n", e.msg.GetStr() );
 	}
 	catch( std::exception &e)
 	{
