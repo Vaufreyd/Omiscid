@@ -433,10 +433,19 @@ bool SerializeValue::IsAnArray() const
 	// Decoding functions
 	SimpleString Omiscid::UnserializeSimpleString( const SerializeValue& Val )
 	{
+		if ( Val.type() == json_spirit::null_type )		// Case on empty string in some json analysis
+		{
+			return SimpleString();
+		}
 		return SimpleString( Val.get_str().c_str() );
 	}
 	void Omiscid::UnserializeSimpleStringFromAddress( const SerializeValue& Val, void * pTmpData )
 	{
+		if ( Val.type() == json_spirit::null_type )		// Case on empty string in some json analysis
+		{
+			*(static_cast<SimpleString*>(pTmpData)) = "";
+			return;
+		}
 		*(static_cast<SimpleString*>(pTmpData)) = Val.get_str().c_str();
 	}
 
