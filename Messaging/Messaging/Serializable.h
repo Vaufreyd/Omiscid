@@ -64,7 +64,9 @@ public:
 	void Unserialize( const SimpleString& SerializedVal );
 	void Unserialize( const SerializeValue& SerializedVal );
 
+	bool PartialUnserializationAllowed = false;
 protected:
+
 	/** @brief Callback for the encoding function */
 	typedef SerializeValue (*SerializeFunction)(void *);
 
@@ -115,6 +117,8 @@ protected:
 		DeclareSerializeMapping();
 	}
 };
+
+#define AddVarToSerialization(a) AddToSerialization(#a, a);
 
 SerializeValue Serialize( Serializable& Data );
 void Unserialize( const SimpleString& Val, Serializable * pData );

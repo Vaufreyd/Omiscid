@@ -285,7 +285,19 @@ void Serializable::Unserialize( const SimpleString& SerializedVal )
 	{
 		Serializable::EncodeMapping * tmpMapping = SerialiseMapping.GetCurrent();
 
-		tmpMapping->Decode( sMsg.FindAndGetValue( tmpMapping->Key ) );
+		try
+		{
+			tmpMapping->Decode( sMsg.FindAndGetValue( tmpMapping->Key ) );
+		}
+		catch( SimpleException& Ex )
+		{
+			if ( PartialUnserializationAllowed == false )
+			{
+				// Partial is not allowed, thow up!
+				throw Ex;
+			}
+			// Ok, go ahead
+		}
 	}
 
 	// Call Post serializable function
