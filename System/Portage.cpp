@@ -11,8 +11,6 @@
 
 using namespace Omiscid;
 
-#ifdef OMISCID_ON_WINDOWS
-
 int Omiscid::random()
 {
 	int result;
@@ -29,6 +27,8 @@ int Omiscid::random()
 #endif
 	return result;
 }
+
+#ifdef OMISCID_ON_WINDOWS
 
 int Omiscid::gettimeofday(struct timeval * tv,struct timezone * tz )
 {
