@@ -160,6 +160,14 @@ SimpleString& SimpleString::operator+= (int i)
 	return *this;
 }
 
+SimpleString& SimpleString::operator+= (char c)
+{
+	MemoryBuffer tmp(10);
+	snprintf((char*)tmp, 10, "%c", c);
+	Append((char*)tmp);
+	return *this;
+}
+
 SimpleString& SimpleString::operator+= (unsigned int ui)
 {
 	MemoryBuffer tmp(100);
