@@ -13,13 +13,14 @@
 
 namespace Omiscid {
 
+	// random port
+	int random();
+
 #ifdef OMISCID_ON_WINDOWS
 
 	// Time function port under Windows
 	int gettimeofday(struct timeval*tv,struct timezone*tz ); // tz is ignored on windows plateforms
 
-	// random port
-	int random();
 
 #endif	// ifdef OMISCID_ON_WINDOWS
 
