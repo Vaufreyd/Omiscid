@@ -300,6 +300,25 @@ bool Socket::Connect(const SimpleString addr, int port, int ConnectionTimeout /*
 	{
 		struct sockaddr_in the_addr;
 		FillAddrIn(&the_addr, addr, port);
+		
+#ifndef OMISCID_ON_WINDOWS
+		// TO CHECK : strange behavior on Linux test... Back to blocking connect on non Windows plateform
+		if( connect(descriptor, (struct sockaddr*)&the_addr, sizeof(struct sockaddr)) == SOCKET_ERROR )
+		{
+#ifdef DEBUG
+			SimpleString Mesg;
+			Mesg = "connect to ";
+			Mesg += addr;
+			Mesg += ":";
+			Mesg += port;
+			throw SocketException( Mesg, Errno() );
+#else
+			throw SocketException("connect", Errno());
+#endif
+		}
+
+		return true;
+#endif
 
 		// Put the socket in non blocking mode
 		if ( SetBlockingMode(false) == true )
